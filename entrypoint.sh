@@ -13,7 +13,7 @@ NC='\033[0m' # No Color
 clear
 echo -e "${RED}"
 echo "=============================="
-echo -e "     ${MAGENTA}Welcome to IndoLife${NC}     "
+echo -e "   ${MAGENTA}Welcome to SkyNest Cloud${NC}     "
 echo "=============================="
 echo -e "${NC}"
 sleep 1
@@ -27,35 +27,13 @@ for i in {1..5}; do
 done
 echo -e "${NC}\n"
 
-# Informasi Sistem
-OS=$(lsb_release -d | awk -F'\t' '{print $2}')
-IP=$(hostname -I | awk '{print $1}')
-CPU=$(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}')
-RAM=$(awk '/MemTotal/ {printf "%.2f GB", $2/1024/1024}' /proc/meminfo)
-DISK=$(df -h / | awk '/\/$/ {print $2}')
-TIMEZONE=$(cat /etc/timezone)
-DATE=$(date '+%Y-%m-%d %H:%M:%S')
+echo -e "${CYAN}==============================${NC}"
 
-# Animasi untuk Menampilkan Info Sistem dengan Delay
-echo -e "${GREEN}Fetching system details...${NC}"
-sleep 1
-echo -e "${BLUE}OS        : ${CYAN}$OS${NC}"
-sleep 0.5
-echo -e "${YELLOW}IP Address: ${CYAN}$IP${NC}"
-sleep 0.5
-echo -e "${MAGENTA}CPU       : ${CYAN}$CPU${NC}"
-sleep 0.5
-echo -e "${GREEN}RAM       : ${CYAN}$RAM${NC}"
-sleep 0.5
-echo -e "${YELLOW}SSD       : ${CYAN}$DISK${NC}"
-sleep 0.5
-echo -e "${MAGENTA}Timezone  : ${CYAN}$TIMEZONE${NC}"
-sleep 0.5
-echo -e "${CYAN}Date      : ${NC}$DATE"
+echo -e "${CYAN}SkyNest Cloud      : ${NC}"
 sleep 1
 
 # Banner Penutupan
-echo -e "${RED}==============================${NC}"
+echo -e "${CYAN}==============================${NC}"
 sleep 1
 
 # Script Tambahan untuk Menjalankan Server
