@@ -13,9 +13,16 @@ NC='\033[0m' # No Color
 clear
 echo -e "${RED}"
 echo "=============================="
-echo -e "     ${MAGENTA}SkyNest Cloud${NC}     "
+echo -e "     ${MAGENTA}Welcome to IndoLife${NC}     "
 echo "=============================="
 echo -e "${NC}"
+sleep 1
+
+# Menampilkan Docker Image Metadata
+echo -e "${CYAN}Docker Image Metadata:${NC}"
+echo -e "${GREEN}Version :${NC} $IMAGE_VERSION"
+echo -e "${GREEN}Revision:${NC} $IMAGE_REVISION"
+echo -e "${GREEN}Created :${NC} $IMAGE_CREATED"
 sleep 1
 
 # Animasi Loading
