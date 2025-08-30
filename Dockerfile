@@ -1,7 +1,7 @@
 # Use official Node.js 20 image based on Debian Bullseye
 FROM node:20-bullseye-slim
 
-# Metadata about the image
+# Metadata about the image Gacor
 LABEL author="SkyNest" \
       maintainer="skynest@official.net" \
       description="A Docker image for running Node.js applications with PM2 and essential utilities."
