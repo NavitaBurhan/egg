@@ -1,10 +1,30 @@
 # Use official Node.js 20 image based on Debian Bullseye
 FROM node:20-bullseye-slim
 
-# Metadata about the image Gacor
+# ARG untuk metadata saat build
+ARG IMAGE_VERSION
+ARG IMAGE_REVISION
+ARG IMAGE_CREATED
+
+# Metadata about the image
 LABEL author="SkyNest" \
       maintainer="skynest@official.net" \
-      description="A Docker image for running Node.js applications with PM2 and essential utilities."
+      description="A Docker image for running Node.js applications with PM2 and essential utilities." \
+      org.opencontainers.image.title="SkyNest Node.js 20 Base" \
+      org.opencontainers.image.description="Custom Node.js 20 image with PM2, Git auto-clone, and essential system utilities for Pterodactyl." \
+      org.opencontainers.image.version="${IMAGE_VERSION}" \
+      org.opencontainers.image.url="https://github.com/skynestoffc/egg" \
+      org.opencontainers.image.source="https://github.com/skynestoffc/egg" \
+      org.opencontainers.image.documentation="https://github.com/indolifemd/indo-life/wiki" \
+      org.opencontainers.image.authors="SkyNest Dev <skynest@official.net>" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.revision="${IMAGE_REVISION}" \
+      org.opencontainers.image.created="${IMAGE_CREATED}"
+
+# Simpan sebagai environment variable di container
+ENV IMAGE_VERSION=${IMAGE_VERSION}
+ENV IMAGE_REVISION=${IMAGE_REVISION}
+ENV IMAGE_CREATED=${IMAGE_CREATED}
 
 # Update and install required dependencies
 RUN apt update && apt -y install \
@@ -24,7 +44,34 @@ RUN apt update && apt -y install \
         build-essential \
         libtool \
         iputils-ping \
-    && rm -rf /var/lib/apt/lists/*  # Clean up APT cache to reduce image size
+        libatk-bridge2.0-0 \
+        libatk1.0-0 \
+        libcups2 \
+        libdrm2 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxrandr2 \
+        libgbm1 \
+        libasound2 \
+        libpangocairo-1.0-0 \
+        libpango-1.0-0 \
+        libx11-xcb1 \
+        libxcb1 \
+        libxext6 \
+        libxfixes3 \
+        libnss3 \
+        libx11-6 \
+        libxrender1 \
+        libjpeg62-turbo \
+        libgtk-3-0 \
+        fonts-liberation \
+        libappindicator3-1 \
+        lsb-release \
+        xdg-utils \
+        wget \
+        ca-certificates \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user 'container' and set home directory
 RUN useradd -m -d /home/container container
