@@ -1,53 +1,33 @@
 #!/bin/bash
 
-# ================================
-#     SkyNest Cloud Server Startup
-# ================================
-
-# Warna Neon
-RED='\033[1;91m'
-GREEN='\033[1;92m'
-YELLOW='\033[1;93m'
-BLUE='\033[1;94m'
-MAGENTA='\033[1;95m'
-CYAN='\033[1;96m'
-WHITE='\033[1;97m'
+# Set warna
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+BLUE='\033[1;34m'
+CYAN='\033[1;36m'
+YELLOW='\033[1;33m'
+MAGENTA='\033[1;35m'
 NC='\033[0m' # No Color
 
-# Typing effect function
-type_out() {
-    text="$1"
-    delay=${2:-0.03}
-    for ((i=0; i<${#text}; i++)); do
-        echo -n "${text:$i:1}"
-        sleep $delay
-    done
-    echo ""
-}
-
-# Clear screen dan banner
+# Banner IndoLife
 clear
-echo -e "${RED}========================================="
-type_out "      ${MAGENTA}Welcome to SkyNest Cloud${RED}"
-echo -e "=========================================${NC}"
+echo -e "${RED}"
+echo "=============================="
+echo -e "     ${MAGENTA}SkyNest Cloud${NC}     "
+echo "=============================="
+echo -e "${NC}"
 sleep 1
 
-# Loading Animasi dengan progress bar
+# Animasi Loading
 echo -e "${CYAN}Loading system information...${NC}"
-progress_bar() {
-    local duration=${1:-5}
-    local interval=0.05
-    local total=$((duration / interval))
-    echo -n "["
-    for ((i=0; i<total; i++)); do
-        echo -ne "${GREEN}#${NC}"
-        sleep $interval
-    done
-    echo "] Done!"
-}
-progress_bar 3
+sleep 1
+for i in {1..5}; do
+    echo -n "."
+    sleep 0.5
+done
+echo -e "${NC}\n"
 
-# Ambil informasi sistem
+# Informasi Sistem
 OS=$(lsb_release -d | awk -F'\t' '{print $2}')
 IP=$(hostname -I | awk '{print $1}')
 CPU=$(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}')
@@ -56,39 +36,47 @@ DISK=$(df -h / | awk '/\/$/ {print $2}')
 TIMEZONE=$(cat /etc/timezone)
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
-# Display Info Sistem dengan animasi
-echo ""
-type_out "${BLUE}Fetching system details...${NC}" 0.05
+# Animasi untuk Menampilkan Info Sistem dengan Delay
+echo -e "${GREEN}Fetching system details...${NC}"
+sleep 1
+echo -e "${BLUE}OS        : ${CYAN}$OS${NC}"
 sleep 0.5
-type_out "${MAGENTA}OS        : ${CYAN}$OS" 0.02
-type_out "${YELLOW}IP Address: ${CYAN}$IP" 0.02
-type_out "${GREEN}CPU       : ${CYAN}$CPU" 0.02
-type_out "${MAGENTA}RAM       : ${CYAN}$RAM" 0.02
-type_out "${YELLOW}SSD       : ${CYAN}$DISK" 0.02
-type_out "${CYAN}Timezone  : ${MAGENTA}$TIMEZONE" 0.02
-type_out "${BLUE}Date      : ${WHITE}$DATE" 0.02
-
-# Banner Penutupan Info
-echo -e "${RED}=========================================${NC}"
+echo -e "${YELLOW}IP Address: ${CYAN}$IP${NC}"
+sleep 0.5
+echo -e "${MAGENTA}CPU       : ${CYAN}$CPU${NC}"
+sleep 0.5
+echo -e "${GREEN}RAM       : ${CYAN}$RAM${NC}"
+sleep 0.5
+echo -e "${YELLOW}SSD       : ${CYAN}$DISK${NC}"
+sleep 0.5
+echo -e "${MAGENTA}Timezone  : ${CYAN}$TIMEZONE${NC}"
+sleep 0.5
+echo -e "${CYAN}Date      : ${NC}$DATE"
 sleep 1
 
-# Set environment container
+# Banner Penutupan
+echo -e "${RED}==============================${NC}"
+sleep 1
+
+# Script Tambahan untuk Menjalankan Server
 cd /home/container
+
+# Make internal Docker IP address available to processes.
 INTERNAL_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 export INTERNAL_IP
 
-# Node.js Version
-type_out "${GREEN}Node.js Version:${NC} $(node -v)" 0.02
-sleep 0.5
+# Print Node.js Version
+echo -e "${GREEN}Node.js Version:${NC} $(node -v)"
+sleep 1
 
 # Replace Startup Variables
 MODIFIED_STARTUP=$(echo -e ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
-type_out "${CYAN}Modified Startup Command:${NC}" 0.02
-echo ":/home/container$ ${MODIFIED_STARTUP}"
+echo -e "${CYAN}Modified Startup Command:${NC}"
 sleep 1
+echo ":/home/container$ ${MODIFIED_STARTUP}"
 
 # Jalankan Server
-type_out "${YELLOW}Starting the server...${NC}" 0.03
+echo -e "${YELLOW}Starting the server...${NC}"
 sleep 1
 eval ${MODIFIED_STARTUP}
 
