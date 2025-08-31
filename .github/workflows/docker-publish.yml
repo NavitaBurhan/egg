@@ -1,11 +1,14 @@
-name: build games
+name: build samp-wine
+
 on:
   workflow_dispatch:
   push:
     branches:
       - master
     paths:
-      - games/**
+      - Dockerfile
+      - entrypoint.sh
+      - .github/workflows/docker-publish.yml
   schedule:
     - cron: "0 0 * * 1"
 
@@ -15,13 +18,8 @@ permissions:
 
 jobs:
   pushMultiArch:
-    name: "games_multiarch:${{ matrix.game }}"
+    name: "samp-wine multiarch build"
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        game:
-          - samp-wine
 
     steps:
       - name: Checkout
@@ -43,8 +41,8 @@ jobs:
       - name: Build and Push Multi-Arch
         uses: docker/build-push-action@v5
         with:
-          context: ./games/${{ matrix.game }}
-          file: ./games/${{ matrix.game }}/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository }}/games:${{ matrix.game }}
+          tags: ghcr.io/${{ github.repository }}:samp-wine
